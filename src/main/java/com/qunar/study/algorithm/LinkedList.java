@@ -148,6 +148,7 @@ public class LinkedList {
     }
 
     /**
+     * 合并两个有序链表
      * @param first
      * @param second
      * @return
@@ -186,6 +187,12 @@ public class LinkedList {
         return head;
     }
 
+    /**
+     * 查找链表倒数第n个节点
+     * @param head
+     * @param n
+     * @return
+     */
     public Node lastNNode(Node head, int n) {
         if (head == null) {
             return null;
