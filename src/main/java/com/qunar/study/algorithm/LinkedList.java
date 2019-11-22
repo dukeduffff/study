@@ -8,7 +8,7 @@ import org.junit.Test;
  */
 public class LinkedList {
     @Test
-    public void main(String[] args) {
+    public void main() {
         int[] arr = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
         Node head = generateNode(arr);
         //调用测试方法
@@ -20,6 +20,7 @@ public class LinkedList {
         printLinkedList(mergeTwoOrderLinkedList(head, head1));*/
         Node result = lastNNode(head, 2);
         System.out.println(result);
+        System.out.println(findMiddleNode(head).data);
     }
 
     /**
@@ -63,7 +64,7 @@ public class LinkedList {
 
         public String toString() {
             if (next == null) {
-                return new StringBuilder("Node:").append(data).append("->").append("NullNode").toString();
+                return new StringBuilder("Node:").append(data).append("->").append("null").toString();
             }
             return new StringBuilder("Node:").append(data).append("->").append(next.toString()).toString();
         }
@@ -214,5 +215,18 @@ public class LinkedList {
             return slow;
         }
         return null;
+    }
+
+    public Node findMiddleNode(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Node fast = head;
+        Node slow = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
     }
 }
