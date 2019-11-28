@@ -9,8 +9,8 @@ import org.junit.Test;
 public class Search {
     @Test
     public void searchTest() {
-        int[] arr = new int[]{1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-        System.out.println(binarySearchFirstBiggerThan(arr, 2));
+        int[] arr = new int[]{4, 5, 6, 1, 2, 3, 4};
+        System.out.println(binarySearchCycleArr(arr, 3));
     }
 
     /**
@@ -39,6 +39,12 @@ public class Search {
         return -1;
     }
 
+    /**
+     * 查找第一个=的值
+     * @param arr
+     * @param findNum
+     * @return
+     */
     public int binarySearchFirst(int[] arr, int findNum) {
         if (arr == null || arr.length == 0) {
             return -1;
@@ -61,6 +67,12 @@ public class Search {
         return -1;
     }
 
+    /**
+     * 查找第一个>=的值
+     * @param arr
+     * @param findNum
+     * @return
+     */
     public int binarySearchFirstBiggerThan(int[] arr, int findNum) {
         if (arr == null || arr.length == 0) {
             return -1;
@@ -76,6 +88,34 @@ public class Search {
                 high = mid - 1;
             } else {
                 low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 循环数组查询
+     * @param arr
+     * @param findNum
+     * @return
+     */
+    public int binarySearchCycleArr(int[] arr, int findNum) {
+        int low = 0;
+        int high = arr.length - 1;
+        while (low <= high) {
+            int leftMin = arr[low];
+            int rightMax = arr[high];
+            int mid = low + ((high - low) >> 1);
+            if (arr[mid] < findNum && rightMax <= findNum) {
+                low = mid + 1;
+            } else if (arr[mid] < findNum && findNum > rightMax) {
+                high = mid - 1;
+            } else if (arr[mid] > findNum && findNum <= leftMin) {
+                low = mid + 1;
+            } else if (arr[mid] > findNum && findNum > leftMin) {
+                high = mid - 1;
+            } else {
+                return mid;
             }
         }
         return -1;
