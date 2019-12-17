@@ -16,7 +16,9 @@ public class Sort {
         System.out.println(Arrays.toString(array));
         /*quickSort(array, 0, 7);*/
         System.out.println(Arrays.toString(array));
-        System.out.println(findMaxN(array, 0, 7, 2));
+//        System.out.println(findMaxN(array, 0, 7, 2));
+        countingSort(array);
+        System.out.println(Arrays.toString(array));
     }
 
     /**
@@ -119,6 +121,43 @@ public class Sort {
             return findMaxN(arr, from, head - 1, n);
         } else {
             return findMaxN(arr, head + 1, to, n);
+        }
+    }
+
+    /**
+     * 计数排序
+     * @param arr
+     */
+    private void countingSort(int[] arr) {
+        if (arr == null || arr.length <= 1) {
+            return;
+        }
+        //查找当前最大的数值
+        int max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
+            }
+        }
+        //申请一个数组，从0到max
+        int[] c = new int[max + 1];
+        //计算每个数值的个数，计入数组c
+        for (int num : arr) {
+            c[num]++;
+        }
+        //做一次累加
+        for (int i = 1; i < c.length; i++) {
+            c[i] = c[i - 1] + c[i];
+        }
+        //临时数组，存放排好序的数据
+        int[] result = new int[arr.length];
+        for (int i = arr.length - 1; i >= 0; i--) {
+            int score = arr[i];
+            int location = c[score]--;
+            result[--location] = score;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = result[i];
         }
     }
 }
