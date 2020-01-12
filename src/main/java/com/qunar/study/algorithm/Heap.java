@@ -63,7 +63,7 @@ public class Heap {
         return result;
     }
 
-    public static void main(String[] args) {
+    public static void main(StringUtil[] args) {
         int[] heapArr = new int[]{5, 1, 9, 2, 3, 7, 14, 13, 4};
         Heap heap = new Heap(heapArr, false);
         int[] sort = heap.sort();

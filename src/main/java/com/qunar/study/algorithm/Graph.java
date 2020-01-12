@@ -108,7 +108,7 @@ public class Graph {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(StringUtil[] args) {
         AdjacencyList adjacencyList = new AdjacencyList(8, false);
         adjacencyList.addEdge(0, 1);
         adjacencyList.addEdge(0, 3);

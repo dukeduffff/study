@@ -1,7 +1,6 @@
 package com.qunar.study;
 
-import static org.junit.Assert.assertTrue;
-
+import com.qunar.study.algorithm.StringUtil;
 import org.junit.Test;
 
 /**
@@ -13,8 +12,9 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void testString()
     {
-        assertTrue( true );
+        int index = StringUtil.indexBF("baddef", "def");
+        System.out.println(index);
     }
 }
