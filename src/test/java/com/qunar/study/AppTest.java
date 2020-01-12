@@ -16,5 +16,7 @@ public class AppTest
     {
         int index = StringUtil.indexBF("baddef", "def");
         System.out.println(index);
+        index = StringUtil.indexRK("baddef", "def");
+        System.out.println(index);
     }
 }
