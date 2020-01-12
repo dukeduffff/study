@@ -8,6 +8,8 @@ import java.util.Arrays;
  * 左右叶子节点分别是2i+1和2i+2
  * 父节点是(i-1)/2
  * 最后一个非叶子节点是(lastIndex - 1) / 2，实际上就是最后一个节点的父节点，其父节点索引前面的节点均为非叶子节点
+ *
+ * 堆可以解决的问题：优先级队列(合并文件,高性能定时器)，求解Top K问题，求解中位数以及百分位数，
  */
 public class Heap {
     protected int[] heap;
