@@ -1,5 +1,7 @@
 package com.qunar.study.algorithm;
 
+import java.util.Arrays;
+
 /**
  * Created by dujian on 2020/01/12
  * 搜索算法
@@ -8,9 +10,9 @@ public class StringUtil {
     /**
      * Brute Force暴力算法
      *
-     * @param main
-     * @param mode
-     * @return
+     * @param main 主串
+     * @param mode 模式串
+     * @return 第一次出现的位置
      */
     public static int indexBF(String main, String mode) {
         if (main == null || main.length() == 0) {
@@ -33,10 +35,10 @@ public class StringUtil {
     }
 
     /**
-     * 利用哈希值进行计算
-     * @param main
-     * @param mode
-     * @return
+     * 利用哈希值进行计算,RK算法
+     * @param main 主串
+     * @param mode 模式串
+     * @return 第一次出现的位置
      */
     public static int indexRK(String main, String mode) {
         if (main == null || main.length() == 0) {
@@ -81,5 +83,43 @@ public class StringUtil {
             result *= num;
         }
         return result;
+    }
+
+    /**
+     * BM算法，坏字符和好后缀原则进行移动
+     * 坏字符:最后一个字符
+     * 好前缀原则:
+     * @param main 主串
+     * @param mode 模式串
+     * @return 第一次出现的位置
+     */
+    public static int indexBM(String main, String mode) {
+        int[] bc = new int[256];
+        generateBC(mode, bc);//生成各个字符最后出现的位置
+        int mainLength = main.length();
+        int modeLength = mode.length();
+        int i = 0;//main上的索引
+
+        while (i <= mainLength - modeLength) {
+            int j;
+            for (j = modeLength - 1; j >= 0; j--) {
+                if (mode.charAt(j) != main.charAt(i + j)) {//坏字符出现的位置
+                    break;
+                }
+            }
+            if (j < 0) {//已经找到
+                return i;
+            }
+            int index = bc[main.charAt(i + j)];//最后一次出现的位置,将mode移动到对齐位置
+            i = i + j - index;
+        }
+        return -1;
+    }
+
+    private static void generateBC(String mode, int[] bc) {//记录mode各个字符出现的位置
+        Arrays.fill(bc, -1);
+        for (int i = 0; i < mode.length(); i++) {//每个字符最后出现的位置
+            bc[mode.charAt(i)] = i;
+        }
     }
 }
