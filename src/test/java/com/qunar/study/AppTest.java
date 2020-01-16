@@ -22,5 +22,7 @@ public class AppTest
         System.out.println(index);
         index = StringUtil.indexBM("abcacabcbcbacabc", "cbacabc");
         System.out.println(index);
+        index = StringUtil.indexKMP("abcacabcbcbacabc", "cbacabc");
+        System.out.println(index);
     }
 }

@@ -157,4 +157,48 @@ public class StringUtil {
             }
         }
     }
+
+    /**
+     * KMP算法,好前缀移动,主要是
+     * @param main 主串
+     * @param mode 模式串
+     * @return 字符串首次出现的位置
+     */
+    public static int indexKMP(String main, String mode) {
+        int[] next = new int[mode.length()];
+        generateNext(mode, next);
+        int j = 0;
+        for (int i = 0; i < main.length(); i++) {
+            while (j > 0 && main.charAt(i) != mode.charAt(j)) {//移动j的过程
+                j = next[j - 1] + 1;//这样移动节省了前面相同的比较次数
+            }
+            if (main.charAt(i) == mode.charAt(j)) {
+                j++;
+            }
+            if (j == mode.length()) {
+                return i - mode.length() + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 利用next之前生成的值进行判断
+     * i之前的next数组都是求出来的,利用next[i]来求解next[i+1]的值
+     * @param mode
+     * @param next
+     */
+    private static void generateNext(String mode, int[] next) {
+        Arrays.fill(next, -1);
+        int k = -1;//每次循环的K值必然是和上次的k值相关，从上次的K值开始查找，直到找到一个
+        for (int i = 1; i < mode.length(); i++) {
+            while (k != -1 && mode.charAt(k + 1) != mode.charAt(i)) {
+                k = next[k];
+            }
+            if (mode.charAt(k + 1) == mode.charAt(i)) {
+                k++;
+            }
+            next[i] = k;
+        }
+    }
 }
