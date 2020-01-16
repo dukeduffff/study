@@ -88,30 +88,48 @@ public class StringUtil {
     /**
      * BM算法，坏字符和好后缀原则进行移动
      * 坏字符:最后一个字符
-     * 好前缀原则:
+     * 好前缀原则:1.模式串中和好后缀匹配的领一个子串;2.模式串中和好后缀匹配的前缀子串
      * @param main 主串
      * @param mode 模式串
      * @return 第一次出现的位置
      */
     public static int indexBM(String main, String mode) {
         int[] bc = new int[256];
+        int[] suffix = new int[mode.length()];
+        boolean[] prefix = new boolean[mode.length()];
         generateBC(mode, bc);//生成各个字符最后出现的位置
+        generateGS(mode, suffix, prefix);
         int mainLength = main.length();
         int modeLength = mode.length();
         int i = 0;//main上的索引
 
         while (i <= mainLength - modeLength) {
             int j;
+            int slen = 0;//好后缀的长度
             for (j = modeLength - 1; j >= 0; j--) {
                 if (mode.charAt(j) != main.charAt(i + j)) {//坏字符出现的位置
                     break;
                 }
+                slen++;
             }
             if (j < 0) {//已经找到
                 return i;
             }
-            int index = bc[main.charAt(i + j)];//最后一次出现的位置,将mode移动到对齐位置
-            i = i + j - index;
+            int badCharMove = j - bc[main.charAt(i + j)];//移动步数
+            int goodSuffixIndex = -1;
+            if (slen > 0) {
+                if (suffix[slen] != -1) {
+                    goodSuffixIndex = j - suffix[slen] + 1;//当前j的位置指向不匹配字符
+                } else {
+                    for (int k = slen; k > 0; k--) {
+                        if (prefix[k]) {
+                            goodSuffixIndex = mode.length() - k;
+                            break;
+                        }
+                    }
+                }
+            }
+            i = i + Math.max(badCharMove, goodSuffixIndex);//坏字符移动的位置
         }
         return -1;
     }
@@ -120,6 +138,23 @@ public class StringUtil {
         Arrays.fill(bc, -1);
         for (int i = 0; i < mode.length(); i++) {//每个字符最后出现的位置
             bc[mode.charAt(i)] = i;
+        }
+    }
+
+    private static void generateGS(String mode, int[] suffix, boolean[] prefix) {
+        //初始化suffix和prefix数组
+        Arrays.fill(suffix, -1);
+        Arrays.fill(prefix, false);
+        for (int i = 0; i < mode.length() - 1; i++) {//倒数第二个字符为止
+            int j = i, k = 0;
+            while (j >= 0 && mode.charAt(j) == mode.charAt(mode.length() - k - 1)) {
+                k++;//统计的长度
+                suffix[k] = j;
+                j--;
+            }
+            if (j < 0) {
+                prefix[k] = true;
+            }
         }
     }
 }
