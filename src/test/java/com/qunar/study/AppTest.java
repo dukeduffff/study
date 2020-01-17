@@ -2,6 +2,7 @@ package com.qunar.study;
 
 import com.qunar.study.algorithm.Backtracking;
 import com.qunar.study.algorithm.StringUtil;
+import com.qunar.study.algorithm.Trie;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -15,8 +16,7 @@ public class AppTest
      * Rigorous Test :-)
      */
     @Test
-    public void testString()
-    {
+    public void testString() {
         int index = StringUtil.indexBF("baddef", "def");
         System.out.println(index);
         index = StringUtil.indexRK("baddef", "def");
@@ -27,6 +27,18 @@ public class AppTest
         System.out.println(index);
         index = StringUtil.indexKMP("abcacabcbcbacabc", "cbacabc");
         System.out.println(index);
+    }
+
+    @Test
+    public void testTrie() {
+        Trie trie = new Trie();
+        trie.insert("abcd");
+        trie.insert("bc");
+        trie.insert("bcd");
+        trie.insert("c");
+        trie.buildFailedPointer();
+        System.out.println(trie.find("s"));
+        System.out.println(trie.shield("absdcabcd"));;
     }
 
     @Test
