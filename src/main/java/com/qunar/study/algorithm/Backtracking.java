@@ -43,9 +43,9 @@ public class Backtracking {
         for (int i = 0; i < queen.length; i++) {
             for (int j = 0; j < queen.length; j++) {
                 if (queen[i] != j) {
-                    System.out.print("  ");
+                    System.out.print("⭕️ ");
                 } else {
-                    System.out.print("Q ");
+                    System.out.print("❎ ");
                 }
             }
             System.out.println();
