@@ -46,6 +46,7 @@ public class Sort {
             if (arr[from] <= arr[from1]) {
                 tmp[i++] = arr[from++];
             } else {
+                //这里可以统计逆序度 num += half - from + 1,from位置的元素比from1的元素都大,个数就是
                 tmp[i++] = arr[from1++];
             }
         }

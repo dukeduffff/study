@@ -1,7 +1,10 @@
 package com.qunar.study;
 
+import com.qunar.study.algorithm.Backtracking;
 import com.qunar.study.algorithm.StringUtil;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 /**
  * Unit test for simple App.
@@ -24,5 +27,13 @@ public class AppTest
         System.out.println(index);
         index = StringUtil.indexKMP("abcacabcbcbacabc", "cbacabc");
         System.out.println(index);
+    }
+
+    @Test
+    public void testBacktracking() {
+        Backtracking backtracking = new Backtracking();
+        int[] queen = new int[8];
+        Arrays.fill(queen, -1);
+        backtracking.eightQueens(queen, 0);
     }
 }
