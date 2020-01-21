@@ -1,6 +1,7 @@
 package com.qunar.study;
 
 import com.qunar.study.algorithm.Backtracking;
+import com.qunar.study.algorithm.Greedy;
 import com.qunar.study.algorithm.StringUtil;
 import com.qunar.study.algorithm.Trie;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class AppTest
         trie.insert("c");
         trie.buildFailedPointer();
         System.out.println(trie.find("s"));
-        System.out.println(trie.shield("absdcabcd"));;
+        System.out.println(trie.shield("absdcabcd"));
     }
 
     @Test
@@ -47,5 +48,11 @@ public class AppTest
         int[] queen = new int[8];
         Arrays.fill(queen, -1);
         backtracking.eightQueens(queen, 0);
+    }
+
+    @Test
+    public void testGreedy() {
+        Greedy greedy = new Greedy();
+        System.out.println(greedy.removeKNum(4312, 4));
     }
 }
