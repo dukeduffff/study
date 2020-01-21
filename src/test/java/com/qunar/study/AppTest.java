@@ -1,9 +1,6 @@
 package com.qunar.study;
 
-import com.qunar.study.algorithm.Backtracking;
-import com.qunar.study.algorithm.Greedy;
-import com.qunar.study.algorithm.StringUtil;
-import com.qunar.study.algorithm.Trie;
+import com.qunar.study.algorithm.*;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -56,5 +53,11 @@ public class AppTest
     public void testGreedy() {
         Greedy greedy = new Greedy();
         System.out.println(greedy.removeKNum(4312, 4));
+    }
+
+    @Test
+    public void testPattern() {
+        Pattern pattern = new Pattern("ab*ef");
+        System.out.println(pattern.match("abcddfssf"));
     }
 }
