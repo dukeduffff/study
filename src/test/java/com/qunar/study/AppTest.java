@@ -47,7 +47,9 @@ public class AppTest
         Backtracking backtracking = new Backtracking();
         int[] queen = new int[8];
         Arrays.fill(queen, -1);
-        backtracking.eightQueens(queen, 0);
+        /*backtracking.eightQueens(queen, 0);*/
+        backtracking.bag01(0, new int[]{1, 4, 5, 5}, 0, 7);
+        System.out.println(backtracking.maxWeight);
     }
 
     @Test

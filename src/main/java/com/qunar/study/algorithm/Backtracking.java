@@ -52,4 +52,25 @@ public class Backtracking {
         }
         System.out.println();
     }
+
+    /**
+     * 0-1背包问题,开始找
+     */
+    public int maxWeight = Integer.MIN_VALUE;
+
+    public void bag01(int weight, int goods[], int index, int limit) {
+        if (weight > limit) {
+            return;
+        }
+        if (index == goods.length || weight == limit) {
+            if (weight > maxWeight) {
+                maxWeight = weight;
+            }
+            return;
+        }
+        bag01(weight, goods, index + 1, limit);//不装第index+1个
+        if (weight + goods[index] < limit) {
+            bag01(weight + goods[index], goods, index + 1, limit);
+        }
+    }
 }
