@@ -118,4 +118,33 @@ public class DynamicProgramming {
         }
         return state[array.length - 1];
     }
+
+    /**
+     * 硬币找零问题,有几种硬币分成几个阶段
+     * @param coin
+     * @param money
+     * @return
+     */
+    public int minCoinChange(int[] coin, int money) {
+        int state[] = new int[money + 1];
+        Arrays.fill(state, -1);
+        for (int i = 0; i < coin.length; i++) {
+            for (int j = money; j > 0; j--) {//从前向后搜索
+                int change = j % coin[i];
+                int num = j / coin[i];
+                if (change == 0) {//如果可以除尽，就使用这种找零
+                    state[j] = num;
+                } else {
+                    if (state[change] == -1) {//领个位置都是-1，表示无法找零
+                        continue;
+                    } else if (state[j] == -1) {//上一个状态无法找零
+                        state[j] = state[change] + num;
+                    } else {
+                        state[j] = Math.min(state[j], state[change] + num);
+                    }
+                }
+            }
+        }
+        return state[money];
+    }
 }
