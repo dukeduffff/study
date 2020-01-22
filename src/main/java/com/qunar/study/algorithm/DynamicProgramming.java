@@ -94,4 +94,28 @@ public class DynamicProgramming {
         }
         return -1;
     }
+
+    /**
+     * 动态规则求解最短路径
+     * @param array
+     * @return
+     */
+    public int shortestPath(int[][] array) {
+        int[] state = new int[array.length];
+        state[0] = array[0][0];
+        //初始化
+        for (int i = 1; i < array.length; i++) {
+            state[i] = state[i - 1] + array[0][i];
+        }
+        //动态规划
+        for (int i = 1; i < array.length; i++) {
+            state[0] = array[i][0] + state[0];//先计算第一个位置的值
+            for (int j = 1; j < array.length; j++) {
+                int up = array[i][j] + state[j];
+                int left = array[i][j] + state[j - 1];
+                state[j] = Math.min(up, left);
+            }
+        }
+        return state[array.length - 1];
+    }
 }
