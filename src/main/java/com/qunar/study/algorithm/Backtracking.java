@@ -73,4 +73,27 @@ public class Backtracking {
             bag01(weight + goods[index], goods, index + 1, limit);
         }
     }
+
+    /**
+     * 矩阵左上角到右下角的最短路径问题
+     */
+
+    private int minDist = Integer.MAX_VALUE;
+    public int shortestPath(int[][] array, int i, int j, int dist) {
+        dist += array[i][j];
+        if (i == array.length - 1 && j == array.length - 1) {
+            if (dist < minDist) {
+                minDist = dist;
+                return minDist;
+            }
+        }
+        //向右走
+        if (i < array.length - 1) {
+            shortestPath(array, i + 1, j, dist);
+        }
+        if (j < array.length - 1) {
+            shortestPath(array, i, j + 1, dist);
+        }
+        return minDist;
+    }
 }

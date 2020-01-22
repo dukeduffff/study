@@ -47,6 +47,7 @@ public class AppTest
         /*backtracking.eightQueens(queen, 0);*/
         backtracking.bag01(0, new int[]{1, 4, 5, 5}, 0, 7);
         System.out.println(backtracking.maxWeight);
+        System.out.println(backtracking.shortestPath(new int[][]{{1, 3, 5, 9}, {2, 1, 3, 4}, {5, 2, 6, 7}, {6, 8, 4, 3}}, 0, 0, 0));;
     }
 
     @Test
