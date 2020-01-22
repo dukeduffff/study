@@ -60,4 +60,12 @@ public class AppTest
         Pattern pattern = new Pattern("ab*ef");
         System.out.println(pattern.match("abcddfssf"));
     }
+
+    @Test
+    public void testDynamic() {
+        DynamicProgramming dynamicProgramming = new DynamicProgramming();
+        System.out.println(dynamicProgramming.maxBag(new int[]{1, 4, 5, 5}, 7));
+        System.out.println(dynamicProgramming.maxBagOp(new int[]{1, 4, 5, 5}, 7));
+        System.out.println(dynamicProgramming.maxBagValue(new int[]{2, 2, 4, 6, 3}, new int[]{3, 4, 8, 9, 6}, 9));
+    }
 }
