@@ -1,5 +1,7 @@
 package com.qunar.study.algorithm;
 
+import com.qunar.study.utils.MathUtil;
+
 import java.util.Arrays;
 
 /**
@@ -200,5 +202,126 @@ public class StringUtil {
             }
             next[i] = k;
         }
+    }
+
+    /**
+     * 莱温斯坦距离,支持增加,删除,替换操作,回溯算法
+     * 该距离越小越能表示两个字符串相似度越高
+     * 为什么可以支持替换操作:因为这是两者距离的计算
+     * @param main
+     * @param mode
+     * @return
+     */
+    public static int lewinsteinDistanceBT(String main, String mode, int i, int j, int distance) {
+        if (i == main.length() || j == mode.length()) {
+            if (i < main.length()) {
+                return distance + main.length() - i;
+            }
+            if (j < mode.length()) {
+                return distance + mode.length() - j;
+            }
+            return distance;
+        }
+        int d = Integer.MAX_VALUE;//取最小值
+        if (main.charAt(i) == mode.charAt(j)) {
+            d = Math.min(lewinsteinDistanceBT(main, mode, i + 1, j + 1, distance), d);
+        } else {
+            //删除i位置或者在j位置前添加和i相同添加
+            d = Math.min(lewinsteinDistanceBT(main, mode, i + 1, j, distance + 1), d);
+            //和上线相反
+            d = Math.min(lewinsteinDistanceBT(main, mode, i, j + 1, distance + 1), d);
+            //
+            d = Math.min(lewinsteinDistanceBT(main, mode, i + 1, j + 1, distance + 1), d);
+        }
+        return d;
+    }
+
+    /**
+     * 莱温斯坦距离-动态规划解决方法
+     *
+     * @param main
+     * @param mode
+     * @return
+     */
+    public static int lewinsteinDistanceDp(String main, String mode) {
+        int l1 = main.length(), l2 = mode.length();
+        int[][] dp = new int[l1][l2];
+        if (main.charAt(0) == mode.charAt(0)) {
+            dp[0][0] = 0;
+        } else {
+            dp[0][0] = 1;
+        }
+        //生成第一行数据
+        for (int i = 1; i < l2; i++) {
+            if (main.charAt(0) == mode.charAt(i)) {
+                dp[0][i] = dp[0][i - 1];
+            } else {
+                dp[0][i] = dp[0][i - 1] + 1;
+            }
+        }
+        //生成第一列数据
+        for (int i = 1; i < l1; i++) {
+            if (main.charAt(i) == mode.charAt(0)) {
+                dp[i][0] = dp[i - 1][0];
+            } else {
+                dp[i][0] = dp[i - 1][0] + 1;
+            }
+        }
+        //生成一般矩阵
+        for (int i = 1; i < l1; i++) {
+            for (int j = 1; j < l2; j++) {
+                if (main.charAt(i) == mode.charAt(j)) {
+                    dp[i][j] = MathUtil.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+                } else {
+                    dp[i][j] = MathUtil.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+                }
+            }
+        }
+        return dp[l1 - 1][l2 - 1];
+    }
+
+    /**
+     * 最长公共子串
+     * 只允许增加和删除操作,不支持替换
+     *
+     * @param main
+     * @param mode
+     * @return
+     */
+    public static int lcsDp(String main, String mode) {
+        int m = main.length(), n = mode.length();
+        int[][] dp = new int[m][n];
+        if (main.charAt(0) == mode.charAt(0)) {
+            dp[0][0] = 1;
+        } else {
+            dp[0][0] = 0;
+        }
+        //生成第一行数据
+        for (int i = 1; i < n; i++) {
+            if (main.charAt(0) == mode.charAt(i)) {
+                dp[0][i] = 1;
+            } else {
+                dp[0][i] = dp[0][i - 1];
+            }
+        }
+        //生成第一列数据
+        for (int i = 1; i < m; i++) {
+            if (main.charAt(i) == mode.charAt(0)) {
+                dp[i][0] = 1;
+            } else {
+                dp[i][0] = dp[i - 1][0];
+            }
+        }
+        //生成通用数据
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (main.charAt(i) == mode.charAt(j)) {
+                    dp[i][j] = MathUtil.max(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] + 1);
+                } else {
+                    dp[i][j] = MathUtil.max(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
     }
 }

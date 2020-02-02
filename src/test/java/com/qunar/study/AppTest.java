@@ -25,6 +25,10 @@ public class AppTest
         System.out.println(index);
         index = StringUtil.indexKMP("abcacabcbcbacabc", "cbacabc");
         System.out.println(index);
+        int distance = StringUtil.lewinsteinDistanceBT("mitcmu", "mtacnu", 0, 0, 0);
+        System.out.println(distance);
+        System.out.println(StringUtil.lewinsteinDistanceDp("mitcmu", "mtacnu"));
+        System.out.println(StringUtil.lcsDp("mitcmu", "mtacnu"));
     }
 
     @Test
