@@ -1,5 +1,7 @@
 package com.qunar.study.algorithm;
 
+import com.qunar.study.utils.MathUtil;
+
 import java.util.Arrays;
 
 /**
@@ -146,5 +148,32 @@ public class DynamicProgramming {
             }
         }
         return state[money];
+    }
+
+    /**
+     * 求解最长递增子序列
+     * @param array
+     * @return
+     */
+    public int longestIncreasingSubSequence(int[] array) {
+        int[] dp = new int[array.length];
+        dp[0] = 1;
+        for (int i = 1; i < array.length; i++) {
+            int j = 0;
+            int max = 0;
+            for (; j < i; j++) {
+                if (array[i] > array[j]) {
+                    max = max > dp[j] ? max : dp[j];
+                }
+            }
+            dp[j] = max + 1;
+        }
+        int max = 0;
+        for (int i = 0; i < dp.length; i++) {
+            if (max < dp[i]) {
+                max = dp[i];
+            }
+        }
+        return max;
     }
 }
