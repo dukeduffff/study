@@ -106,12 +106,45 @@ public class Graph {
             }
             return false;
         }
+
+        /**
+         * 拓扑排序-Kahn算法,有向无环图
+         * 判断是不是某个顶点的入度是不是0,是0就可以执行了
+         */
+        public void topoSortByKahn() {
+            int[] inDegree = new int[vertexNum];
+            for (int i = 0; i < vertexNum; i++) {
+                for (int j = 0; j < adjArr[i].size(); j++) {
+                    Integer vertex = adjArr[i].get(j);
+                    inDegree[vertex]++;//统计各个顶点的入度
+                }
+            }
+            Queue<Integer> queue = new LinkedList<>();
+            for (int i = 0; i < vertexNum; i++) {
+                if (inDegree[i] == 0) {
+                    queue.add(i);
+                }
+            }
+            while (!queue.isEmpty()) {
+                Integer vertex = queue.poll();
+                System.out.print(vertex + "->");
+                for (int i = 0; i < adjArr[vertex].size(); i++) {
+                    Integer v = adjArr[vertex].get(i);
+                    inDegree[v]--;
+                    if (inDegree[v] == 0) {
+                        queue.offer(v);
+                    }
+                }
+            }
+        }
     }
 
-    public static void main(StringUtil[] args) {
-        AdjacencyList adjacencyList = new AdjacencyList(8, false);
+    public static void main(String[] args) {
+        AdjacencyList adjacencyList = new AdjacencyList(4, true);
         adjacencyList.addEdge(0, 1);
-        adjacencyList.addEdge(0, 3);
+        adjacencyList.addEdge(1, 2);
+        adjacencyList.addEdge(3, 2);
+        /*adjacencyList.addEdge(0, 3);
         adjacencyList.addEdge(1, 2);
         adjacencyList.addEdge(1, 4);
         adjacencyList.addEdge(3, 4);
@@ -120,8 +153,9 @@ public class Graph {
         adjacencyList.addEdge(4, 6);
         adjacencyList.addEdge(5, 7);
         adjacencyList.addEdge(6, 7);
-        adjacencyList.bfs(0, 7);
+        adjacencyList.bfs(0, 7);*/
         System.out.println();
-        adjacencyList.dfs(0, 7);
+//        adjacencyList.dfs(0, 7);
+        adjacencyList.topoSortByKahn();
     }
 }
