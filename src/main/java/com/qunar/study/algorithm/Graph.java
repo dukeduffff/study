@@ -1,6 +1,10 @@
 package com.qunar.study.algorithm;
 
+import sun.security.provider.certpath.Vertex;
+
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -110,6 +114,7 @@ public class Graph {
         /**
          * 拓扑排序-Kahn算法,有向无环图
          * 判断是不是某个顶点的入度是不是0,是0就可以执行了
+         * 如果输出的顶点个数小于实际顶点个数，说明里面有环
          */
         public void topoSortByKahn() {
             int[] inDegree = new int[vertexNum];
@@ -137,6 +142,99 @@ public class Graph {
                 }
             }
         }
+
+        //拓扑排序-dfs算法
+        public void topoSortByDfs() {
+
+        }
+    }
+
+    public static class DirectGraph {
+        private int vertexNum;
+        private LinkedList<Edge>[] adjArr;
+
+        public DirectGraph(int vertexNum) {
+            this.vertexNum = vertexNum;
+            this.adjArr = new LinkedList[vertexNum];
+            for (int i = 0; i < vertexNum; i++) {
+                adjArr[i] = new LinkedList<>();
+            }
+        }
+
+        public void addEdge(int s, int t, int weight) {
+            this.adjArr[s].add(new Edge(s, t, weight));
+        }
+
+        private static class Edge {
+            public int sid;
+            public int tid;
+            public int weight;
+
+            public Edge(int sid, int tid, int weight) {
+                this.sid = sid;
+                this.tid = tid;
+                this.weight = weight;
+            }
+        }
+
+        private static class Vertex {
+            public int id;
+            public int distance;//从顶点到该顶点的距离
+
+            public Vertex(int id, int distance) {
+                this.id = id;
+                this.distance = distance;
+            }
+        }
+
+        public void dijkstra(int s, int t) {
+            int[] predecessor = new int[this.vertexNum];
+            PriorityQueue<Vertex> priorityQueue = new PriorityQueue<>(new Comparator<DirectGraph.Vertex>() {
+                @Override
+                public int compare(DirectGraph.Vertex o1, DirectGraph.Vertex o2) {
+                    return o1.distance - o2.distance;
+                }
+            });//优先级队列
+            Vertex[] minDistanceV = new Vertex[this.vertexNum];//记录从开始节点到这个节点的距离
+            for (int i = 0; i < this.vertexNum; i++) {
+                minDistanceV[i] = new Vertex(i, Integer.MAX_VALUE);
+            }
+            boolean[] inQueue = new boolean[this.vertexNum];
+            minDistanceV[s].distance = 0;
+            inQueue[s] = true;
+            priorityQueue.offer(minDistanceV[s]);
+            while (!priorityQueue.isEmpty()) {
+                Vertex vertex = priorityQueue.poll();
+                if (vertex.id == t) {
+                    break;
+                }
+                for (Edge edge : this.adjArr[vertex.id]) {
+                    int distance = vertex.distance + edge.weight;
+                    //如果小于之前的距离
+                    if (distance < minDistanceV[edge.tid].distance) {
+                        predecessor[edge.tid] = edge.sid;
+                        minDistanceV[edge.tid].distance = distance;
+                        if (inQueue[edge.tid]) {
+                            priorityQueue.remove(minDistanceV[edge.tid]);
+                            priorityQueue.offer(minDistanceV[edge.tid]);
+                        } else {
+                            priorityQueue.offer(minDistanceV[edge.tid]);
+                            inQueue[edge.tid] = true;
+                        }
+                    }
+                }
+            }
+            print(s, t, predecessor);
+        }
+
+        public void print(int s, int t, int[] predecessor) {
+            if (s == t) {
+                System.out.print(s);
+                return;
+            }
+            print(s, predecessor[t], predecessor);
+            System.out.print("->" + t);
+        }
     }
 
     public static void main(String[] args) {
@@ -157,5 +255,16 @@ public class Graph {
         System.out.println();
 //        adjacencyList.dfs(0, 7);
         adjacencyList.topoSortByKahn();
+        System.out.println();
+        DirectGraph directGraph = new DirectGraph(6);
+        directGraph.addEdge(0, 1, 10);
+        directGraph.addEdge(0, 4, 15);
+        directGraph.addEdge(1, 2, 15);
+        directGraph.addEdge(1, 3, 2);
+        directGraph.addEdge(3, 2, 1);
+        directGraph.addEdge(3, 5, 12);
+        directGraph.addEdge(2, 5, 5);
+        directGraph.addEdge(4, 5, 10);
+        directGraph.dijkstra(0, 5);
     }
 }
