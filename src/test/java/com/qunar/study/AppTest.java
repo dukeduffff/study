@@ -76,4 +76,10 @@ public class AppTest
         System.out.println(dynamicProgramming.minCoinChange(new int[]{1, 3, 5}, 9));
         System.out.println(dynamicProgramming.longestIncreasingSubSequence(new int[]{2, 9, 3, 6, 5, 1, 7}));
     }
+
+    @Test
+    public void testRecursion() {
+        Recursion recursion = new Recursion();
+        System.out.println(recursion.fibonacci(100));
+    }
 }
