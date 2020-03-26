@@ -16,12 +16,28 @@ import java.lang.reflect.Proxy;
 public class DynamicProxy {
     interface ITest{
         void print();
+
+        void print2();
     }
 
-    class TestDemo implements ITest {
+    interface ITest2 {
+        void print3();
+    }
+
+    class TestDemo implements ITest, ITest2 {
         @Override
         public void print() {
             System.out.println("实际调用:TestDemo");
+        }
+
+        @Override
+        public void print2() {
+            System.out.println("实际调用2:TestDemo");
+        }
+
+        @Override
+        public void print3() {
+            System.out.println("实际调用3:TestDemo");
         }
     }
 
@@ -46,8 +62,10 @@ public class DynamicProxy {
     @Test
     public void test() {
         JDKProxy<ITest> jdkProxy = new JDKProxy<>();
-        ITest test = (ITest) jdkProxy.newProxy(new TestDemo());
+        TestDemo test = (TestDemo) jdkProxy.newProxy(new TestDemo());
         test.print();
+        test.print2();
+        test.print3();
     }
 
 }

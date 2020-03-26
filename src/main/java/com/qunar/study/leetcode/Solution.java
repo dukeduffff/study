@@ -143,13 +143,67 @@ public class Solution {
         return (int) mid;
     }
 
-    public static void main(String[] args) {
+    public static int stack(int[] height) {
+        Deque<Integer> deque = new LinkedList<>();
+        int i = 0, result = 0;
+        while (i < height.length) {
+            while (!deque.isEmpty() && height[i] > height[deque.getLast()]) {
+                Integer cave = deque.removeLast();
+                if (deque.isEmpty()) {
+                    break;
+                }
+                Integer bound = deque.getLast();
+                result += (Math.min(height[i], height[bound]) - height[cave]) * (i - bound - 1);
+            }
+            deque.addLast(i++);
+        }
+        return result;
+    }
+
+    public static String longestPalindrome(String s) {
+        if (s == null || s.isEmpty()) {
+            return "";
+        }
+        String reverseStr = new StringBuilder(s).reverse().toString();
+        int[][] dp = new int[s.length()][s.length()];
+        int maxLen = 0;
+        int maxEnd = -1;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == reverseStr.charAt(0)) {//先设置第一行的状态
+                dp[0][i] = 1;
+                maxEnd = i;
+                maxLen = 1;
+            }
+            if (s.charAt(0) == reverseStr.charAt(i)) {
+                dp[i][0] = 1;
+                maxEnd = 0;
+                maxLen = 1;
+            }
+        }
+        for (int i = 1; i < s.length(); i++) {
+            for (int j = 1; j < s.length(); j++) {
+                if (reverseStr.charAt(i) == s.charAt(j)) {
+                    int len = dp[i - 1][j - 1] + 1;
+                    dp[i][j] = len;
+                    if (len > maxLen) {
+                        maxLen = len;
+                        maxEnd = j;
+                    }
+                }
+            }
+        }
+        return s.substring(maxEnd - maxLen + 1, maxEnd + 1);
+    }
+
+    public static void main(StringSubject[] args) {
         Solution solution = new Solution();
-        Deque<String> deque = new LinkedList<>();
+        Deque<StringSubject> deque = new LinkedList<>();
         solution.firstMissingPositive(new int[]{2, 1});
         System.out.println(solution.isValid("]"));
         System.out.println(solution.longestValidParentheses("()(())"));
         System.out.println(Arrays.toString(solution.maxSlidingWindow(new int[]{1, -1}, 1)));
         System.out.println(solution.mySqrt(4));
+        stack(new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1});
+        longestPalindrome("aacdefcaa");
     }
 }
