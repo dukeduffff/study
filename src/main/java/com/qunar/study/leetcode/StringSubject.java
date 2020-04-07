@@ -62,11 +62,34 @@ public class StringSubject {
         return true;
     }
 
+    public boolean isPalindrome(String s) {
+        int left = 0;
+        s = s.toLowerCase();
+        int right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) < 'a' || s.charAt(left) > 'z') {
+                left++;
+                continue;
+            }
+            if (s.charAt(right) < 'a' || s.charAt(right) > 'z') {
+                right--;
+                continue;
+            }
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
     @Test
     public void test() {
         List<String> strings = restoreIpAddresses("000256");
         for (int i = 0; i < strings.size(); i++) {
             System.out.println(strings.get(i));
         }
+        System.out.println(isPalindrome("0P"));
     }
 }

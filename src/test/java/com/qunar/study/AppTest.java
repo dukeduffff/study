@@ -62,8 +62,8 @@ public class AppTest
 
     @Test
     public void testPattern() {
-        Pattern pattern = new Pattern("ab*ef");
-        System.out.println(pattern.match("abcddfssf"));
+        /*Pattern pattern = new Pattern("ab*ef");
+        System.out.println(pattern.match("abcddfssf"));*/
     }
 
     @Test

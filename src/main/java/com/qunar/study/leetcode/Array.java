@@ -167,6 +167,113 @@ public class Array {
         }
     }
 
+    public boolean exist(char[][] board, String word) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == word.charAt(0)) {
+                    boolean[][] access = new boolean[board.length][board[0].length];
+                    if (exist(board, access, i, j, word, 1)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean exist(char[][] board, boolean[][] access, int x, int y, String word, int index) {
+        access[x][y] = true;
+        if (index == word.length()) {
+            return true;
+        }
+        if (x > 0 && !access[x - 1][y] && board[x - 1][y] == word.charAt(index)) {
+            if (exist(board, access, x - 1, y, word, index + 1)) {
+                return true;
+            }
+        }
+        if (x < board.length - 1 && !access[x + 1][y] && board[x + 1][y] == word.charAt(index)) {
+            if (exist(board, access, x + 1, y, word, index + 1)) {
+                return true;
+            }
+        }
+        if (y > 0 && !access[x][y - 1] && board[x][y - 1] == word.charAt(index)) {
+            if (exist(board, access, x, y - 1, word, index + 1)) {
+                return true;
+            }
+        }
+        if (y < board[0].length - 1 && !access[x][y + 1] && board[x][y + 1] == word.charAt(index)) {
+            if (exist(board, access, x, y + 1, word, index + 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int firstMissingPositive(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] > 0 && nums[i] < nums.length && nums[i] != i + 1) {
+                swap(nums, i, nums[i] - 1);
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+        return nums.length;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
+    public int threeSumClosest(int[] nums, int target) {
+        int cloest = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length - 2; i++) {
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[left] + nums[right] + nums[i];
+                cloest = findLarger(sum, cloest, target);
+                right--;
+            }
+        }
+        return target;
+    }
+
+    private int findLarger(int first, int second, int target) {
+        if (Math.abs(target - first) > Math.abs(target - second)) {
+            return second;
+        }
+        return first;
+    }
+
+    public int largestRectangleArea(int[] heights) {
+        Deque<Integer> deque = new ArrayDeque<>();
+        deque.addLast(-1);
+        int largest = 0;
+        for (int i = 0; i < heights.length; i++) {
+            if (deque.peekLast() == -1 || heights[i] >= heights[deque.peekLast()]) {
+                deque.addLast(i);
+            } else {//将栈顶弹出
+                while (deque.peekLast() != -1 && heights[i] < heights[deque.peekLast()]) {
+                    Integer location = deque.removeLast();
+                    int area = (i - deque.peekLast() - 1) * heights[location];
+                    largest = Math.max(largest, area);
+                }
+                deque.addLast(i);
+            }
+        }
+        int maxLocation = deque.peekLast();
+        while (deque.size() > 1) {
+            Integer location = deque.removeLast();
+            largest = Math.max(largest, heights[location] * (maxLocation - deque.peekLast()));
+        }
+        return largest;
+    }
+
     @Test
     public void test() {
         System.out.println(findRotationPoint(new int[]{5,1,2,3,4}));
@@ -174,5 +281,10 @@ public class Array {
         System.out.println(sqrtDiff(new int[]{-1, 0, 1, 1}));
         System.out.println(diffNum(new int[]{1, 2, 3, 3, 5}, 4));
         combinationSum(new int[]{2, 3, 6, 7}, 7);
+        exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED");
+        firstMissingPositive(new int[]{3, 5, -1, 1});
+        threeSumClosest(new int[]{1,2,4,8,16,32,64,128}, 82);
+
+        largestRectangleArea(new int[]{5,4,1,2});
     }
 }

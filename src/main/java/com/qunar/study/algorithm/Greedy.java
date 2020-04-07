@@ -69,4 +69,6 @@ public class Greedy {
         low = num % pow;
         return high * pow + low;
     }
+
+
 }
